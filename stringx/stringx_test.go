@@ -16,6 +16,10 @@ func TestRandString(t *testing.T) {
 
 	s1 := RandString(n)
 
+	if got := len(s1); got != n {
+		t.Errorf("len(s1) = %d, want %d", got, n)
+	}
+
 	for _, r := range s1 {
 		if !strings.ContainsRune(letters, r) {
 			t.Errorf("s Contains not the uppercase or lowercase letters: %q", r)
