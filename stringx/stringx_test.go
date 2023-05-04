@@ -20,7 +20,7 @@ func TestRandString(t *testing.T) {
 	}
 	for _, r := range s1 {
 		if !strings.ContainsRune(letters, r) {
-			t.Errorf("s Contains not the uppercase or lowercase letters: %q", r)
+			t.Errorf("s1 contains not the uppercase or lowercase letters: %q", r)
 		}
 	}
 
@@ -30,7 +30,7 @@ func TestRandString(t *testing.T) {
 	}
 	for _, r := range s2 {
 		if !strings.ContainsRune(letters, r) {
-			t.Errorf("s Contains not the uppercase or lowercase letters: %q", r)
+			t.Errorf("s2 contains not the uppercase or lowercase letters: %q", r)
 		}
 	}
 
