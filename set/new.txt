@@ -1,0 +1,16 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/weiwenchen2022/utils/set
+cpu: Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz
+BenchmarkAppendTo-12    	   69088	     16911 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   70822	     17505 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   70999	     17130 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   67520	     17668 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   68853	     17156 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   69555	     17043 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   71136	     17188 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   70963	     17055 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   70130	     17003 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAppendTo-12    	   70719	     17031 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/weiwenchen2022/utils/set	13.941s
