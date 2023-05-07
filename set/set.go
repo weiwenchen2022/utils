@@ -8,7 +8,7 @@ import (
 
 var empty_struct = struct{}{}
 
-// Set represents a set. To create a Set use NewSet().
+// Set represents a set. To create a Set use New().
 type Set[E comparable] map[E]struct{}
 
 // New returns a initialized set that contains elements of xs.
