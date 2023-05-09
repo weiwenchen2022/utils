@@ -310,3 +310,10 @@ func countFunc(a any, eq any) int {
 	}
 	return count
 }
+
+func sliceOf(a any) any {
+	return reflect.AppendSlice(
+		reflect.Zero(reflect.SliceOf(reflect.TypeOf(a).Elem())),
+		reflect.ValueOf(a),
+	).Interface()
+}

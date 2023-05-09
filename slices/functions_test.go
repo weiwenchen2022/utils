@@ -439,6 +439,97 @@ func TestCountFunc(t *testing.T) {
 	}
 }
 
+func TestMax(t *testing.T) {
+	t.Parallel()
+
+	ints := []int{8, 3, 4, 44, 0}
+	if got, want := Max(ints...), 44; want != got {
+		t.Errorf("Max(%#v....) = %v, want %v", ints, got, want)
+	}
+
+	ints = nil
+	if !panics(func() { Max(ints...) }) {
+		t.Errorf("Max(%#v...): got no panic, want panic", ints)
+	}
+
+	floats := []float64{2, 38.3, 4, 4.4, 4}
+	if got, want := Max(floats...), 38.3; want != got {
+		t.Errorf("Max(%#v....) = %v, want %v", floats, got, want)
+	}
+
+	floats = nil
+	if !panics(func() { Max(floats...) }) {
+		t.Errorf("Max(%#v...): got no panic, want panic", floats)
+	}
+
+	strings := []string{"abc", "abd", "cbd"}
+	if got, want := Max(strings...), "cbd"; want != got {
+		t.Errorf("Max(%#v....) = %v, want %v", strings, got, want)
+	}
+
+	strings = nil
+	if !panics(func() { Max(strings...) }) {
+		t.Errorf("Max(%#v...): got no panic, want panic", strings)
+	}
+}
+
+func TestMin(t *testing.T) {
+	t.Parallel()
+
+	ints := []int{8, 3, 4, 44, 0}
+	if got, want := Min(ints...), 0; want != got {
+		t.Errorf("Min(%#v....) = %v, want %v", ints, got, want)
+	}
+
+	ints = nil
+	if !panics(func() { Min(ints...) }) {
+		t.Errorf("Min(%#v...): got no panic, want panic", ints)
+	}
+
+	floats := []float64{2, 38.3, 4, 4.4, 4}
+	if got, want := Min(floats...), float64(2); want != got {
+		t.Errorf("Min(%#v....) = %v, want %v", floats, got, want)
+	}
+
+	floats = nil
+	if !panics(func() { Min(floats...) }) {
+		t.Errorf("Min(%#v...): got no panic, want panic", floats)
+	}
+
+	strings := []string{"abc", "abd", "cbd"}
+	if got, want := Min(strings...), "abc"; want != got {
+		t.Errorf("Min(%#v....) = %v, want %v", strings, got, want)
+	}
+
+	strings = nil
+	if !panics(func() { Min(strings...) }) {
+		t.Errorf("Min(%#v...): got no panic, want panic", strings)
+	}
+}
+
+func TestSliceOf(t *testing.T) {
+	t.Parallel()
+
+	testcases := []struct {
+		s []int
+	}{
+		{nil},
+		{[]int{0, 1, 2, 3, 4}},
+	}
+
+	for _, tc := range testcases {
+		got := SliceOf(tc.s...)
+		if fmt.Sprintf("%#v", tc.s) != fmt.Sprintf("%#v", got) {
+			t.Errorf("SliceOf(%#v...) = %#v, want %#[1]v", tc.s, got)
+		}
+
+		got = sliceOf(tc.s).([]int)
+		if fmt.Sprintf("%#v", tc.s) != fmt.Sprintf("%#v", got) {
+			t.Errorf("sliceOf(%#v...) = %#v, want %#[1]v", tc.s, got)
+		}
+	}
+}
+
 // Tests for convenience wrappers.
 
 func TestSlice_Filter(t *testing.T) {

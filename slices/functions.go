@@ -4,6 +4,8 @@ import (
 	"math/rand"
 	"runtime"
 	"sync"
+
+	"golang.org/x/exp/constraints"
 )
 
 // Filter returns a new slice of elements satisfies f(i, v).
@@ -275,6 +277,34 @@ func CountFunc[S ~[]E, E any](s S, eq func(E) bool) int {
 		}
 	}
 	return count
+}
+
+// Max returns the maximum element of the slice s, or panics if s is empty.
+func Max[E constraints.Ordered](s ...E) E {
+	max := s[0]
+	for _, v := range s {
+		if max < v {
+			max = v
+		}
+	}
+	return max
+}
+
+// Min returns the minimum element of the slices s, or panics if s is empty.
+func Min[E constraints.Ordered](s ...E) E {
+	min := s[0]
+	for _, v := range s {
+		if v < min {
+			min = v
+		}
+	}
+	return min
+}
+
+// SliceOf returns a slice which contains the element vs.
+// If returns nil if len(vs) == 0.
+func SliceOf[E any](vs ...E) []E {
+	return append([]E(nil), vs...)
 }
 
 // Convenience wrappers for common cases.
