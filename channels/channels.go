@@ -16,7 +16,7 @@ func NewChannel[C ~chan E, E any](c C) Channel[E] {
 
 // Recv is a convenience method: c.Recv(ctx, s) returns Recv(ctx, c, s).
 func (c Channel[E]) Recv(ctx context.Context, s []E) (n int, closed bool, err error) {
-	return Recv(ctx, (<-chan E)(c), s)
+	return Recv(ctx, c, s)
 }
 
 // RecvOnlyChannel attaches the common methods to <-chan E.
@@ -50,7 +50,7 @@ func SliceToChannel[S ~[]E, E any](s S) <-chan E {
 
 // ChannelToSlice returns a slice consists of elements from channel c.
 // Returned after c closed.
-func ChannelToSlice[C ~<-chan E, E any](c C) []E {
+func ChannelToSlice[E any](c <-chan E) []E {
 	var r []E
 	for v := range c {
 		r = append(r, v)
@@ -81,7 +81,7 @@ func Generator[E any](generator func(yield func(E))) <-chan E {
 // Callers should always process the n > 0 elements returned before considering
 // the closed condition. Doing so correctly handles closed condition that happen after
 // receiving some elements and also both of the allowed closed behaviors.
-func Recv[C ~<-chan E, E any](ctx context.Context, c C, s []E) (n int, closed bool, err error) {
+func Recv[E any](ctx context.Context, c <-chan E, s []E) (n int, closed bool, err error) {
 	for i := range s {
 		select {
 		case <-ctx.Done():
@@ -137,7 +137,7 @@ func FanIn[C ~<-chan E, E any](ctx context.Context, cs ...C) <-chan E {
 
 // FanOut returns n channels that's elements from provided input channel.
 // Once input channel have closed, then the returned channels will close.
-func FanOut[C ~<-chan E, E any](ctx context.Context, n int, input C) []<-chan E {
+func FanOut[E any](ctx context.Context, n int, input <-chan E) []<-chan E {
 	cs := make([]<-chan E, n)
 
 	output := func(c chan<- E) {
