@@ -1,6 +1,6 @@
 # utils
 
-This module contains some Go libraries for slices, maps, channels, ..., based on Go Generics for.
+This module contains some Go libraries for slices, maps, channels, ..., based on Go Generics.
 
 ### Installation
 
