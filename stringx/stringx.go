@@ -3,7 +3,6 @@ package stringx
 
 import (
 	"math/rand"
-	"time"
 	"unsafe"
 )
 
@@ -13,10 +12,6 @@ const (
 	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
 	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 // RandString returns a random string of a fixed length,
 // contains only the uppercase and lowercase letters of the English alphabet.
