@@ -50,21 +50,21 @@ func TestIsZero(t *testing.T) {
 func TestInterface(t *testing.T) {
 	t.Parallel()
 
-	if got, want := types.Interface(0), 0; want != got {
+	if got, want := types.Interface(0), any(0); want != got {
 		t.Errorf("Interface(0) = %v, want %v", got, want)
 	}
-	if got, want := types.Interface(42), 42; want != got {
+	if got, want := types.Interface(42), any(42); want != got {
 		t.Errorf("Interface(42) = %v, want %v", got, want)
 	}
-	if got, want := types.Interface("").(string), ""; want != got {
+	if got, want := types.Interface(""), any(""); want != got {
 		t.Errorf("Interface(\"\") = %v, want %v", got, want)
 	}
-	if got, want := types.Interface("foo").(string), "foo"; want != got {
+	if got, want := types.Interface("foo"), any("foo"); want != got {
 		t.Errorf("Interface(\"foo\") = %v, want %v", got, want)
 	}
 
-	want := struct{ foo string }{}
-	if got := types.Interface(want).(struct{ foo string }); want != got {
+	var want any = struct{ foo string }{}
+	if got := types.Interface(want); want != got {
 		t.Errorf("Interface(%v) = %v, want %[1]v", want, got)
 	}
 
