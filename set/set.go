@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var empty_struct = struct{}{}
+var emptyStruct = struct{}{}
 
 // Set represents a set. To create a Set use New().
 type Set[E comparable] map[E]struct{}
@@ -16,7 +16,7 @@ func New[E comparable](xs ...E) Set[E] {
 	s := make(Set[E], len(xs))
 
 	for _, x := range xs {
-		s[x] = empty_struct
+		s[x] = emptyStruct
 	}
 
 	return s
@@ -38,14 +38,14 @@ func (s Set[E]) Add(x E) bool {
 		return false
 	}
 
-	s[x] = empty_struct
+	s[x] = emptyStruct
 	return true
 }
 
 // AddAll adds the elements of xs to the set s.
 func (s Set[E]) AddAll(xs ...E) {
 	for _, x := range xs {
-		s[x] = empty_struct
+		s[x] = emptyStruct
 	}
 }
 
@@ -84,7 +84,7 @@ func (s Set[E]) Copy() Set[E] {
 	copy := make(Set[E], len(s))
 
 	for x := range s {
-		copy[x] = empty_struct
+		copy[x] = emptyStruct
 	}
 
 	return copy
@@ -175,7 +175,7 @@ func (s Set[E]) UnionWith(t Set[E]) bool {
 
 	for x := range t {
 		if _, ok := s[x]; !ok {
-			s[x] = empty_struct
+			s[x] = emptyStruct
 			grew = true
 		}
 	}
@@ -224,7 +224,7 @@ func (s Set[E]) SymmetricDifferenceWith(t Set[E]) {
 
 	for x := range t {
 		if _, ok := s[x]; !ok {
-			s[x] = empty_struct
+			s[x] = emptyStruct
 		}
 	}
 
