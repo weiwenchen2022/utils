@@ -840,20 +840,20 @@ func TestIndexFunc(t *testing.T) {
 	}
 
 	s1 := []string{"hi", "HI"}
-	if got := IndexFunc(s1, equalToIndex(equal[string], "HI")); 1 != got {
+	if got := IndexFunc(s1, equalToIndex(equal[string], "HI")); got != 1 {
 		t.Errorf("IndexFunc(%v, equalToIndex(equal[string], %q)) = %d, want %d", s1, "HI", got, 1)
 	}
 	eq := equalToIndex(equal[string], "HI")
-	if got := indexFunc(s1, func(a any) bool { return eq(a.(string)) }); 1 != got {
+	if got := indexFunc(s1, func(a any) bool { return eq(a.(string)) }); got != 1 {
 		t.Errorf("IndexFunc(%v, equalToIndex(equal[string], %q)) = %d, want %d", s1, "HI", got, 1)
 	}
 
-	if got := IndexFunc(s1, equalToIndex(strings.EqualFold, "HI")); 0 != got {
+	if got := IndexFunc(s1, equalToIndex(strings.EqualFold, "HI")); got != 0 {
 		t.Errorf("IndexFunc(%v, equalToIndex(strings.EqualFold, %q)) = %d, want %d", s1, "HI", got, 0)
 	}
 
 	eq = equalToIndex(strings.EqualFold, "HI")
-	if got := indexFunc(s1, func(a any) bool { return eq(a.(string)) }); 0 != got {
+	if got := indexFunc(s1, func(a any) bool { return eq(a.(string)) }); got != 0 {
 		t.Errorf("indexFunc(%v, equalToIndex(strings.EqualFold, %q)) = %d, want %d", s1, "HI", got, 0)
 	}
 }
