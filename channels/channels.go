@@ -4,7 +4,17 @@ package channels
 import (
 	"context"
 	"sync"
+	"time"
 )
+
+// ErrTimeout is the error returned by SendTimed.
+var ErrTimeout error = timeoutError{}
+
+type timeoutError struct{}
+
+func (timeoutError) Error() string   { return "timeout" }
+func (timeoutError) Timeout() bool   { return true }
+func (timeoutError) Temporary() bool { return true }
 
 // Channel attaches the common methods to chan E.
 type Channel[E any] chan E
@@ -17,6 +27,11 @@ func NewChannel[C ~chan E, E any](c C) Channel[E] {
 // Recv is a convenience method: c.Recv(ctx, s) returns Recv(ctx, c, s).
 func (c Channel[E]) Recv(ctx context.Context, s []E) (n int, closed bool, err error) {
 	return Recv(ctx, c, s)
+}
+
+// SendTimed is a convenience method: c.SendTimed(x, s, d) returns SendTimed(c, x, d).
+func (c Channel[E]) SendTimed(x E, d time.Duration) error {
+	return SendTimed(c, x, d)
 }
 
 // RecvOnlyChannel attaches the common methods to <-chan E.
@@ -97,6 +112,23 @@ func Recv[E any](ctx context.Context, c <-chan E, s []E) (n int, closed bool, er
 	}
 
 	return n, false, nil
+}
+
+// SendTimed sends x on the channel c, with timeout.
+func SendTimed[E any](c chan<- E, x E, d time.Duration) error {
+	t := time.NewTimer(d)
+
+	select {
+	case <-t.C:
+		return ErrTimeout
+	case c <- x:
+	}
+
+	if !t.Stop() {
+		<-t.C
+	}
+
+	return nil
 }
 
 // FanIn returns a channel that's elements from provided input channels.

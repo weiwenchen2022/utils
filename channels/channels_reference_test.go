@@ -4,6 +4,9 @@ import (
 	"context"
 	"reflect"
 	"sync"
+	"time"
+
+	"github.com/weiwenchen2022/utils/channels"
 )
 
 // This file contains reference channels functions implementations for unit-tests.
@@ -99,6 +102,35 @@ func recv(ctx context.Context, a any, p any) (n int, closed bool, err error) {
 	}
 
 	return n, false, nil
+}
+
+func sendTimed(c, x any, d time.Duration) error {
+	t := time.NewTimer(d)
+
+	cases := []reflect.SelectCase{
+		{
+			Dir:  reflect.SelectRecv,
+			Chan: reflect.ValueOf(t.C),
+		},
+		{
+			Dir:  reflect.SelectSend,
+			Chan: reflect.ValueOf(c),
+			Send: reflect.ValueOf(x),
+		},
+	}
+
+	chosen, _, _ := reflect.Select(cases)
+	switch chosen {
+	case 0:
+		return channels.ErrTimeout
+	default:
+	}
+
+	if !t.Stop() {
+		<-t.C
+	}
+
+	return nil
 }
 
 func fanIn(ctx context.Context, a any) any {

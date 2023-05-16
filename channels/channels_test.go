@@ -169,6 +169,67 @@ func TestRecv(t *testing.T) {
 	})
 }
 
+func TestSendTimed(t *testing.T) {
+	t.Parallel()
+
+	testWithTimeout(t, 5*time.Second, func(t *testing.T) {
+		var c chan int
+		err := SendTimed(c, 0, 100*time.Millisecond)
+		if err != ErrTimeout {
+			t.Error("expect SendTimed timeout")
+		}
+		err = sendTimed(c, 0, 100*time.Millisecond)
+		if err != ErrTimeout {
+			t.Error("expect SendTimed timeout")
+		}
+
+		c = make(chan int)
+		done := make(chan struct{})
+
+		var got []int
+		go func() {
+			got = ChannelToSlice(c)
+			close(done)
+		}()
+
+		want := []int{1, 2, 3}
+		for _, v := range want {
+			err := SendTimed(c, v, 100*time.Millisecond)
+			if err != nil {
+				t.Error(err)
+			}
+		}
+		close(c)
+
+		<-done
+		if !Equal(want, got) {
+			t.Errorf("got %#v, want %#v", got, want)
+		}
+
+		c = make(chan int)
+		done = make(chan struct{})
+
+		got = nil
+		go func() {
+			got = ChannelToSlice(c)
+			close(done)
+		}()
+
+		for _, v := range want {
+			err := sendTimed(c, v, 100*time.Millisecond)
+			if err != nil {
+				t.Error(err)
+			}
+		}
+		close(c)
+
+		<-done
+		if !Equal(want, got) {
+			t.Errorf("got %#v, want %#v", got, want)
+		}
+	})
+}
+
 func TestFanIn(t *testing.T) {
 	t.Parallel()
 
