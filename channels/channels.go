@@ -29,7 +29,7 @@ func (c Channel[E]) Recv(ctx context.Context, s []E) (n int, closed bool, err er
 	return Recv(ctx, c, s)
 }
 
-// SendTimed is a convenience method: c.SendTimed(x, s, d) returns SendTimed(c, x, d).
+// SendTimed is a convenience method: c.SendTimed(x, d) returns SendTimed(c, x, d).
 func (c Channel[E]) SendTimed(x E, d time.Duration) error {
 	return SendTimed(c, x, d)
 }
