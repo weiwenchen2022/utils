@@ -3,29 +3,25 @@ package types
 
 import "reflect"
 
+// New returns a pointer to a newly allocated value of that type whose' contents is v.
+func New[T any](v T) *T { return &v }
+
 // Zero returns a zero value for the specified type.
-func Zero[T any]() (v T) {
-	return v
-}
+func Zero[T any]() (v T) { return v }
 
 // IsZero reports whether v is the zero value for its type.
-func IsZero[T any](v T) bool {
-	return reflect.ValueOf(v).IsZero()
-}
+func IsZero[T any](v T) bool { return reflect.ValueOf(v).IsZero() }
 
 // Interface returns v as an any. It is equivalent to:
 // var a any = v
-func Interface[T any](v T) (a any) {
-	return v
-}
+func Interface[T any](v T) any { return v }
 
 // Convert returns the value v converted to type T2.
 // If the usual Go conversion rules do not allow conversion of the value v to type T2,
 // or if converting v to type T2 panics,
 // or if the result value was obtained by accessing unexported struct fields, Convert panics.
-func Convert[T2, T1 any](v T1) T2 {
-	typeOfT2 := reflect.TypeOf(*new(T2))
-	return reflect.ValueOf(v).Convert(typeOfT2).Interface().(T2)
+func Convert[T2, T1 any](v T1) (v2 T2) {
+	return reflect.ValueOf(v).Convert(reflect.TypeOf(v2)).Interface().(T2)
 }
 
 // CanConvert reports whether the value v can be converted to type T2.
